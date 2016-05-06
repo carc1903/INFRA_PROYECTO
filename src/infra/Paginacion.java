@@ -181,22 +181,10 @@ public class Paginacion extends javax.swing.JFrame {
                     this.MemoriaHDD.remove(((Proceso)list[i]));
                 }
                 else{
-                    int faltan=((Proceso)list[i]).Dato-(10-cantidadOcupadas);
-                    System.out.println(faltan);
                     Object[] list2 = MemoriaRam.toArray();
-                    Proceso aux1=((Proceso)list2[0]);
-                    Proceso aux2=((Proceso)list2[0]);
                     
-                    System.out.println(aux1.Dato);
-                    
-                    aux1.Dato=aux1.Dato-faltan;
-                    aux2.Dato=faltan;
-                    
-                    System.out.println(aux1.Dato);
-                    System.out.println(aux2.Dato);
-                    
-                    this.MemoriaHDD.add(aux2);
-                    this.MemoriaRam.remove(((Proceso)list[0]));
+                    this.MemoriaHDD.add(((Proceso)list2[0]));
+                    this.MemoriaRam.remove(((Proceso)list2[0]));
                     
                     this.MemoriaRam.add(((Proceso)list[i]));
                     this.MemoriaHDD.remove(((Proceso)list[i]));
