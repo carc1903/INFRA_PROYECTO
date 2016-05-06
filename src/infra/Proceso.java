@@ -18,4 +18,5 @@ public class Proceso {
     int tiemporestante;
     int Resultado;
     boolean Bloqueo;
+    boolean Esperando = false;
 }
