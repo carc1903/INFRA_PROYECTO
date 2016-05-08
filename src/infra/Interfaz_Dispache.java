@@ -6,10 +6,13 @@
 package infra;
 
 
-import java.util.ArrayList;
+import java.awt.Color;
+import java.awt.Component;
 import java.util.LinkedList;
 import java.util.Queue;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 /**
  *
@@ -18,11 +21,11 @@ import javax.swing.DefaultListModel;
 public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
     int IdContador=0;
     Queue<Proceso> Ready = new LinkedList<>();
-    ArrayList<Proceso> Block = new ArrayList<>();
+    Queue<Proceso> Block = new LinkedList<>();
     Thread temporizador;
     Thread temporizador2;
     DefaultListModel modeloExit = new DefaultListModel();
-    int Recursos = 2;
+    boolean Recursos = true;
     
     
 
@@ -35,7 +38,14 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         temporizador2 = new Thread(this);
         temporizador2.start();
         initComponents();
-        jLabel8.setText(Integer.toString(Recursos));
+        jPanel1.setBackground(Color.GREEN);
+        
+        DefaultListModel modelo = new DefaultListModel();
+        modelo.addElement("Proceso Infinito");
+        modelo.addElement("Proceso Bloqueo");
+        modelo.addElement("Proceso Termina");
+        jList5.setModel(modelo);
+        jList5.setCellRenderer( new MyListRenderer2());
     }
 
     /**
@@ -66,8 +76,9 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         jScrollPane5 = new javax.swing.JScrollPane();
         jList5 = new javax.swing.JList<>();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,7 +128,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         jLabel6.setText("Exit");
 
         jList5.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Proceso Infinito", "Proceso Bloqueo", "Proceso Termina"};
+            String[] strings = {};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -125,9 +136,20 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
 
         jLabel7.setText("Recursos disponibles:");
 
-        jLabel8.setText("0");
-
         jLabel9.setText("0");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 37, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jLabel8.setText("Sin procesos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -135,92 +157,100 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addGap(66, 66, 66)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jButton1)
-                        .addGap(12, 12, 12)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
-                        .addGap(18, 18, 18))
+                        .addGap(38, 38, 38)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(148, 148, 148))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(350, 350, 350)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(113, 113, 113)
+                        .addComponent(jLabel2)
+                        .addGap(71, 71, 71)
+                        .addComponent(jLabel9)))
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(182, 182, 182)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel9)
-                        .addGap(214, 214, 214)
                         .addComponent(jLabel6)
-                        .addGap(215, 215, 215))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(67, 67, 67))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(263, 263, 263))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(430, 430, 430)
+                        .addComponent(jLabel5))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(350, 350, 350)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel8))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(433, 433, 433)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(52, 52, 52))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(426, 426, 426))))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel5)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(78, 78, 78)
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(104, 104, 104)
-                                    .addComponent(jButton1)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel7)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(17, 17, 17))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGap(26, 26, 26)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(15, 15, 15)
+                                        .addComponent(jButton1)))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                .addGap(61, 61, 61)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
@@ -235,6 +265,8 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         switch (jList5.getSelectedIndex()) {
             case 0:
                 P.ID=IdContador;
+                P.Tipo="Infinito";
+                P.Nombre="Proceso "+IdContador;
                 P.Dato=0;
                 P.Resultado=0;
                 P.Duracion=1000;
@@ -248,11 +280,13 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                 break;
             case 1:
                 P.ID=IdContador;
+                P.Tipo="Bloqueo";
+                P.Nombre="Proceso "+IdContador;
                 P.Dato=0;
                 P.Resultado=0;
-                P.Duracion=35;
-                P.sumatoria= 1;
-                P.tiemporestante=35;
+                P.Duracion=30;
+                P.sumatoria= 10;
+                P.tiemporestante=30;
                 P.Estado="Ready";
                 P.Bloqueo=true;
                 IdContador+=1;
@@ -261,11 +295,13 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                 break;
             case 2:
                 P.ID=IdContador;
+                P.Tipo="Termina";
+                P.Nombre="Proceso "+IdContador;
                 P.Dato=0;
                 P.Resultado=0;
-                P.Duracion=30;
-                P.sumatoria= 1;
-                P.tiemporestante=30;
+                P.Duracion=20;
+                P.sumatoria= 5;
+                P.tiemporestante=20;
                 P.Estado="Ready";
                 P.Bloqueo=false;
                 Ready.add(P);
@@ -285,6 +321,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
             modelo.addElement("Proceso "+ ((Proceso)list[i]).ID);
         }
         jList1.setModel(modelo);
+        jList1.setCellRenderer( new MyListRenderer1(list));
     }
     void ListaExit(Proceso P){
         modeloExit.addElement("Proceso "+ P.ID);
@@ -299,17 +336,31 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
             modelo.addElement("Proceso "+ ((Proceso)list[i]).ID);
         }
         jList2.setModel(modelo);
+        jList2.setForeground(Color.red);
     }
     
     void ListaRunning(Proceso P){
         DefaultListModel modelo = new DefaultListModel();
         modelo.addElement("Id: "+ P.ID);
-        modelo.addElement("Duracion: "+ P.Duracion);
-        modelo.addElement("Dato: "+ P.Dato);
+        modelo.addElement("Tipo: "+ P.Tipo);
+        modelo.addElement("Duracion: "+ P.Duracion+"s");
         modelo.addElement("Sumatoria: "+ P.sumatoria);
-        modelo.addElement("Tiempo restante: "+ P.tiemporestante);
-        modelo.addElement("Resultado: "+ P.Resultado);
-        modelo.addElement("Bloqueo: "+ P.Bloqueo);
+        modelo.addElement("Tiempo restante: "+ P.tiemporestante +"s");
+        modelo.addElement("Resultado Sumatoria: "+ P.Resultado);
+        modelo.addElement("Utiliza Recuros: "+ P.Utilizando_Recurso);
+        
+        if(null != P.Tipo)switch (P.Tipo) {
+            case "Infinito":
+                jList3.setBackground(Color.GREEN);
+                break;
+            case "Bloqueo":
+                jList3.setBackground(Color.RED);
+                break;
+            default:
+                jList3.setBackground(Color.BLUE);
+                break;
+        }
+        
         jList3.setModel(modelo);
     }
 
@@ -343,7 +394,6 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                 segundos=0;
                 jLabel9.setText(Integer.toString(segundos));
             }
-            Block();
         try {
                 Thread.sleep(1000);
                 }catch(InterruptedException e) {}
@@ -363,53 +413,120 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                 CPULibre();
             }catch(java.lang.NullPointerException e){}
             
-            if(!Ready.isEmpty()){
-                if(Recursos==0 && Ready.peek().Bloqueo==true){
-                    Ready.add(Ready.poll());
+            if(!Ready.isEmpty() || !Block.isEmpty()){
+                
+                if(Recursos==false && Ready.peek().Bloqueo==true && Ready.peek().Utilizando_Recurso==false){
+                    Block.add(Ready.poll());
+                    ListaBlock();
+                    Runing();
                     return;
                 }
                 
-                Proceso P =Ready.poll();
-                jLabel5.setText("Se sedio el control al Proceso "+P.ID);
+                Proceso P;
+                
+                if(!Block.isEmpty() && Recursos==true){
+                    P =Block.poll();
+                    Recursos=false;
+                    jPanel1.setBackground(Color.RED);
+                } 
+                else{P= Ready.poll();}
+                
+                
+                jLabel8.setText("Se sedio el control al Proceso "+P.ID);
                 P.Resultado+=P.sumatoria;
                 P.tiemporestante-=10;
                 ListaReady();
+                ListaBlock();
                 ListaRunning(P);
                 
                 if(P.tiemporestante<=0){
+                    if(P.Bloqueo){
+                        Recursos=true;
+                        jPanel1.setBackground(Color.GREEN);
+                    }
                     ListaExit(P);
                 }
                 else{
-                    if(P.Bloqueo==false){
-                        Ready.add(P);
+                    if(P.Bloqueo){
+                        Recursos=false;
+                        jPanel1.setBackground(Color.RED);
+                        P.Utilizando_Recurso=true;
                     }
-                    else{
-                        Recursos-=1;
-                        jLabel8.setText(Integer.toString(Recursos));
-                        Block.add(P);
-                    }
-                }
+                    Ready.add(P);}
             }
     }
     
-    void Block(){
-        for(int i=0;i<= Block.size()-1;i++){
-            Proceso P =Block.get(i);
-            P.tiemporestante-=1;
-            if(P.tiemporestante<=0){       
-            Block.remove(i);
-            Recursos+=1;
-            jLabel8.setText(Integer.toString(Recursos));
-            Ready.add(P);
-            ListaBlock();
-            ListaReady();
-            }
+    class MyListRenderer1 extends DefaultListCellRenderer
+    {   
+        Object[] list;
+        public MyListRenderer1(Object[] list){
+            this.list=list;
         }
         
-        
-        
-        
+        public String Encontrar(String S){
+            for(int i = 0; i<list.length; i++){
+                if(S == null ? ((Proceso)list[i]).Nombre == null : S.equals(((Proceso)list[i]).Nombre)){
+                    return ((Proceso)list[i]).Tipo;
+                }
+            }
+            return null;
+        }
+  
+        public Component getListCellRendererComponent( JList list,
+                Object value, int index, boolean isSelected,
+                boolean cellHasFocus )
+        {
+            super.getListCellRendererComponent( list, value, index,
+                    isSelected, cellHasFocus );
+  
+            
+            //System.out.print(value.toString());
+            
+            if(null != Encontrar(value.toString()))
+            switch (Encontrar(value.toString())) {
+                case "Infinito":
+                    setForeground( Color.GREEN );
+                    break;
+                case "Bloqueo":
+                    setForeground( Color.RED );
+                    break;
+                default:
+                    setForeground( Color.BLUE );
+                    break;
+            }
+            return(this);
+        }
     }
+    
+    class MyListRenderer2 extends DefaultListCellRenderer
+    {   
+        
+        public Component getListCellRendererComponent( JList list,
+                Object value, int index, boolean isSelected,
+                boolean cellHasFocus )
+        {
+            super.getListCellRendererComponent( list, value, index,
+                    isSelected, cellHasFocus );
+  
+            
+            //System.out.print(value.toString());
+            
+            
+            switch (value.toString()) {
+                case "Proceso Infinito":
+                    setForeground( Color.GREEN );
+                    break;
+                case "Proceso Bloqueo":
+                    setForeground( Color.RED );
+                    break;
+                default:
+                    setForeground( Color.BLUE );
+                    break;
+            }
+            return(this);
+        }
+    }
+    
     
     
     
@@ -465,6 +582,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
     private javax.swing.JList<String> jList3;
     private javax.swing.JList<String> jList4;
     private javax.swing.JList<String> jList5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

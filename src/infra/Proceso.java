@@ -11,12 +11,15 @@ package infra;
  */
 public class Proceso {
     int ID;
+    String Nombre;
     String Estado;
+    String Tipo;
     int Dato;
     int Duracion;
     int sumatoria;
     int tiemporestante;
     int Resultado;
     boolean Bloqueo;
-    boolean Esperando = false;
+    boolean Utilizando_Recurso = false;
+   
 }
