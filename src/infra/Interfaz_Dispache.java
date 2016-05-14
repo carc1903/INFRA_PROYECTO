@@ -26,6 +26,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
     Thread temporizador2;
     DefaultListModel modeloExit = new DefaultListModel();
     boolean Recursos = true;
+    Proceso Temp=null;
     
     
 
@@ -238,11 +239,11 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(15, 15, 15)
-                                        .addComponent(jButton1)))
-                                .addGap(18, 18, 18)
+                                        .addComponent(jButton1))
+                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
@@ -284,9 +285,9 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                 P.Nombre="Proceso "+IdContador;
                 P.Dato=0;
                 P.Resultado=0;
-                P.Duracion=30;
+                P.Duracion=15;
                 P.sumatoria= 10;
-                P.tiemporestante=30;
+                P.tiemporestante=15;
                 P.Estado="Ready";
                 P.Bloqueo=true;
                 IdContador+=1;
@@ -299,9 +300,9 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                 P.Nombre="Proceso "+IdContador;
                 P.Dato=0;
                 P.Resultado=0;
-                P.Duracion=20;
+                P.Duracion=10;
                 P.sumatoria= 5;
-                P.tiemporestante=20;
+                P.tiemporestante=10;
                 P.Estado="Ready";
                 P.Bloqueo=false;
                 Ready.add(P);
@@ -314,6 +315,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
     }//GEN-LAST:event_jButton1ActionPerformed
 
     void ListaReady(){
+        try{
         DefaultListModel modelo = new DefaultListModel();
         Object[] list = Ready.toArray();
         
@@ -322,13 +324,16 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         }
         jList1.setModel(modelo);
         jList1.setCellRenderer( new MyListRenderer1(list));
+        }catch(java.lang.NullPointerException e){}
     }
     void ListaExit(Proceso P){
         modeloExit.addElement("Proceso "+ P.ID);
         jList4.setModel(modeloExit);
+        
     }
     
     void ListaBlock(){
+        try{ 
         DefaultListModel modelo = new DefaultListModel();
         Object[] list = Block.toArray();
         
@@ -337,6 +342,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         }
         jList2.setModel(modelo);
         jList2.setForeground(Color.red);
+        }catch(java.lang.NullPointerException e){}
     }
     
     void ListaRunning(Proceso P){
@@ -368,6 +374,8 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         DefaultListModel modelo = new DefaultListModel();
         modelo.addElement("CPU libre");
         jList3.setModel(modelo);
+        jLabel8.setText("Sin procesos");
+        jList3.setBackground(Color.WHITE);
     }
     
     
@@ -378,29 +386,32 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         while(ct == temporizador) {  
             Runing();
         try {
-                Thread.sleep(1000*10);
+                Thread.sleep(1000*5);
                 }catch(InterruptedException e) {}
         }
     }
 
     public void run2() {
-        int segundos=-1;
+        int segundos=0;
         Thread ct2 = Thread.currentThread();
         while(ct2 == temporizador2) {
+            if(segundos==5){
+                jLabel9.setText(Integer.toString(segundos));
+                segundos=0;
+            }
             try{
                 jLabel9.setText(Integer.toString(segundos++));
             }catch(java.lang.NullPointerException e){}
-            if(segundos==10){
-                segundos=0;
-                jLabel9.setText(Integer.toString(segundos));
-            }
         try {
                 Thread.sleep(1000);
                 }catch(InterruptedException e) {}
         }
     }
     void Runing(){
-        System.out.print("ok");
+        
+            try{
+                CPULibre();
+            }catch(java.lang.NullPointerException e){}
             
             if(!Block.isEmpty()){
                 ListaBlock();
@@ -409,9 +420,16 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
             if(!Ready.isEmpty()){
                 ListaReady();
             }
-            try{
-                CPULibre();
-            }catch(java.lang.NullPointerException e){}
+            
+            
+            if(Temp!=null){
+                if(Temp.Bloqueo){
+                    Recursos=true;
+                    jPanel1.setBackground(Color.GREEN);
+                }
+                ListaExit(Temp);
+                Temp=null;
+            }
             
             if(!Ready.isEmpty() || !Block.isEmpty()){
                 
@@ -434,19 +452,16 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                 
                 jLabel8.setText("Se sedio el control al Proceso "+P.ID);
                 P.Resultado+=P.sumatoria;
-                P.tiemporestante-=10;
+                P.tiemporestante-=5;
                 ListaReady();
                 ListaBlock();
                 ListaRunning(P);
                 
                 if(P.tiemporestante<=0){
-                    if(P.Bloqueo){
-                        Recursos=true;
-                        jPanel1.setBackground(Color.GREEN);
-                    }
-                    ListaExit(P);
+                    Temp=P;
                 }
                 else{
+                    
                     if(P.Bloqueo){
                         Recursos=false;
                         jPanel1.setBackground(Color.RED);
