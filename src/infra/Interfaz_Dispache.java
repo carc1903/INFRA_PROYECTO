@@ -82,7 +82,10 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(204, 204, 255));
+        setForeground(new java.awt.Color(153, 255, 153));
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setText("NEW");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,6 +93,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
             }
         });
 
+        jList1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = {};
             public int getSize() { return strings.length; }
@@ -97,12 +101,16 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         });
         jScrollPane1.setViewportView(jList1);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel1.setText("Ready");
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel2.setText("Running");
 
-        jLabel3.setText("Dispache:");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setText("Dispacher:");
 
+        jList2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = {};
             public int getSize() { return strings.length; }
@@ -110,8 +118,10 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         });
         jScrollPane3.setViewportView(jList2);
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Block");
 
+        jList3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jList3.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = {"CPU Libre"};
             public int getSize() { return strings.length; }
@@ -119,6 +129,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         });
         jScrollPane4.setViewportView(jList3);
 
+        jList4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jList4.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = {};
             public int getSize() { return strings.length; }
@@ -126,8 +137,10 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         });
         jScrollPane2.setViewportView(jList4);
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel6.setText("Exit");
 
+        jList5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jList5.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = {};
             public int getSize() { return strings.length; }
@@ -135,8 +148,10 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
         });
         jScrollPane5.setViewportView(jList5);
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel7.setText("Recursos disponibles:");
 
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -150,6 +165,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setText("Sin procesos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -220,7 +236,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -251,7 +267,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         pack();
@@ -450,7 +466,7 @@ public class Interfaz_Dispache extends javax.swing.JFrame implements Runnable{
                 else{P= Ready.poll();}
                 
                 
-                jLabel8.setText("Se sedio el control al Proceso "+P.ID);
+                jLabel8.setText("Se cedió el control al Proceso "+P.ID);
                 P.Resultado+=P.sumatoria;
                 P.tiemporestante-=5;
                 ListaReady();
